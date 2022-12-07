@@ -21,7 +21,12 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Last name is required."],
     },
-    creatorProfile: String,
+    creatorProfile: {
+      type: String
+    },
+    profilePic: {
+      type: String
+    },
     songs: { type: 
       [{type: Schema.Types.ObjectId, ref: 'Song'}]
   },

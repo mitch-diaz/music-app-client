@@ -91,11 +91,12 @@ router.post('/logout', (req, res, next) =>{
 // ============ ❗️ USER PROFILE PAGE ❗️ ============
 
 router.get('/user-profile', (req, res, next) => {
-  User.findById(req.session.currentlyLoggedIn)
+  User.findById(req.session.currentlyLoggedIn._id)
   .populate('songs')
-  .then(movieFromDb => {
-      console.log('The clicked on movie: ', movieFromDb);
-      res.json('movies/movie-details', movieFromDb);
+  .populate('comments')
+  .then(theUser => {
+      console.log('The clicked on movie: ', theUser);
+      res.json('auth/user-profile', theUser);
   })
   .catch(error => {
       console.log({error});
@@ -105,35 +106,35 @@ router.get('/user-profile', (req, res, next) => {
 
 // ============ ❗️ UPDATE USER PROFILE ❗️ =============
 
-router.get('/movies/:id/edit', (req, res, next) => {
+// router.get('/user-profile/:id/edit', (req, res, next) => {
     
-  Movie.findById(req.params.id)
-  .then((movieFromDb) => {
-      console.log('Update movie: ', movieFromDb);
-      Celebrity.find(req.params.celebsFromDb)
-      .then((celebsFromDb)=>{
-          console.log('Update celeb: ', celebsFromDb);
-          res.render('movies/edit-movie', movieFromDb)
-      })
-  })
-})
+//   User.findById(req.params.id)
+//   .then((movieFromDb) => {
+//       console.log('Update movie: ', movieFromDb);
+//       Celebrity.find(req.params.celebsFromDb)
+//       .then((celebsFromDb)=>{
+//           console.log('Update celeb: ', celebsFromDb);
+//           res.render('movies/edit-movie', movieFromDb)
+//       })
+//   })
+// })
 
-router.post('/movies/:id', (req, res, next)=>{
-  const movieToUpdate = {
-      title: req.body.title,
-      genre: req.body.genre,
-      plot: req.body.plot,
-      cast: req.body.cast
-  }
+// router.post('/movies/:id', (req, res, next)=>{
+//   const movieToUpdate = {
+//       title: req.body.title,
+//       genre: req.body.genre,
+//       plot: req.body.plot,
+//       cast: req.body.cast
+//   }
 
-  Movie.findByIdAndUpdate(req.params.id, movieToUpdate)
-  .then(theUpdatedMovie => {
-      console.log('The Edit: ', theUpdatedMovie);
-      res.redirect(`/movies/${theUpdatedMovie.id}`);
-  }).catch(error => {
-      console.log({error});
-  })
-})
+//   Movie.findByIdAndUpdate(req.params.id, movieToUpdate)
+//   .then(theUpdatedMovie => {
+//       console.log('The Edit: ', theUpdatedMovie);
+//       res.redirect(`/movies/${theUpdatedMovie.id}`);
+//   }).catch(error => {
+//       console.log({error});
+//   })
+// })
 
 
 module.exports = router;

@@ -15,7 +15,7 @@ const cookieParser = require("cookie-parser");
 
 // ====== CONNECTION to DB ======
 mongoose
-  .connect('mongodb://localhost/expressApp')
+  .connect('mongodb://localhost/music-app-backend2')
   .then(x => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`))
   .catch(err => console.error('Error connecting to mongo', err));
 
@@ -39,9 +39,9 @@ app.use(
     saveUninitialized: true,
     cookie: {
       maxAge: 600000
-    }, // ADDED code below !!!
+    },
     store: MongoStore.create({
-      mongoUrl: 'mongodb://localhost/music-app-backend'
+      mongoUrl: 'mongodb://localhost/music-app-backend2'
     })
   })
 );
@@ -56,6 +56,9 @@ app.use("/api", indexRoutes);
 
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
+
+const songRoutes = require("./routes/songs.routes");
+app.use("/songs", songRoutes);
 
 
 
