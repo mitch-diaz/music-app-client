@@ -5,7 +5,7 @@ const Song = require("../models/Song.model")
 const bcryptjs = require('bcryptjs');
 
 
-// =============== SIGNUP ===============
+// =============== SIGNUP ✅ ===============
 
 router.post('/signup', (req, res, next)=>{
   const saltRounds = 12;
@@ -29,7 +29,7 @@ router.post('/signup', (req, res, next)=>{
 });
 
 
-// ============= LOGIN =============
+// ============= LOGIN ✅ =============
 
 router.post('/login', (req, res, next) => {
   if (req.body.email === '' || req.body.password === '') {
@@ -78,7 +78,7 @@ router.get('/serializeuser', (req, res, next)=>{
 })
 
 
-// ============= LOGOUT =============
+// ============= LOGOUT ✅ =============
 
 router.post('/logout', (req, res, next) =>{
   req.session.destroy(err => {

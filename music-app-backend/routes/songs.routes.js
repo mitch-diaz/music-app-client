@@ -3,13 +3,12 @@ const router = express.Router();
 const Song = require("../models/Song.model");
 const User = require("../models/User.model");
 const Comment = require("../models/Comment.model");
-const { Schema, model } = require("mongoose");
 
 
 
 // ============ CREATE A SONG ============
 // create route good ✅
-// needs Cloudinary
+// 👉 needs Cloudinary for file upload
 
 router.post('/add-song', (req, res ,next) => {
     console.log(req.body);
@@ -42,9 +41,9 @@ router.post('/add-song', (req, res ,next) => {
 });
 
 
-// ============ READ A LIST OF SONGS  ============
+// ============ READ A LIST OF SONGS ✅ ============
 
-router.get("/songs", (req, res, next) => {
+router.get("/songs-list", (req, res, next) => {
     Song.find()
 	.then((theSongs) => {
         res.json(theSongs);
@@ -58,7 +57,7 @@ router.get("/songs", (req, res, next) => {
 // ============ DISPLAY ONE SONG ============
 // 👉 .populate() user?, comments?
 
-router.get("/songs/:songId", (req, res, next) => {
+router.get("/:songId", (req, res, next) => {
 	Song.findById(req.params.songId)
 		.then((songFromDb) => {
 			res.json(songFromDb);
