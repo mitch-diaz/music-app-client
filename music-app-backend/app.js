@@ -13,13 +13,6 @@ const cookieParser = require("cookie-parser");
 
 
 
-// ====== CONNECTION to DB ======
-mongoose
-  .connect('mongodb://localhost/music-app-backend2')
-  .then(x => console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`))
-  .catch(err => console.error('Error connecting to mongo', err));
-
-
 // ℹ️ This function is getting exported from the config folder. It runs most pieces of middleware
 require("./config")(app);
 
@@ -60,6 +53,8 @@ app.use("/auth", authRoutes);
 const songRoutes = require("./routes/songs.routes");
 app.use("/songs", songRoutes);
 
+const commentRoutes = require("./routes/comments.routes");
+app.use("/comments", commentRoutes);
 
 
 require("./error-handling")(app);

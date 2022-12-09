@@ -21,6 +21,9 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Last name is required."],
     },
+    creatorTitle: {
+      type: String
+    },
     creatorProfile: {
       type: String
     },
@@ -29,10 +32,13 @@ const userSchema = new Schema(
     },
     songs: { type: 
       [{type: Schema.Types.ObjectId, ref: 'Song'}]
-  },
+    },
     comments: { type: 
     [{type: Schema.Types.ObjectId, ref: 'Comment'}]
-},
+    },
+    // reviews: { type: 
+    // [{type: Schema.Types.ObjectId, ref: 'Review'}]
+    // },
   },
   {
     timestamps: true,

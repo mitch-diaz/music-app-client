@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User.model");
+const Comment = require("../models/Comment.model")
 const Song = require("../models/Song.model")
 const bcryptjs = require('bcryptjs');
 
 
-// =============== SIGNUP ✅ ===============
+// =============== ✅ SIGNUP ===============
 
 router.post('/signup', (req, res, next)=>{
   const saltRounds = 12;
@@ -29,7 +30,7 @@ router.post('/signup', (req, res, next)=>{
 });
 
 
-// ============= LOGIN ✅ =============
+// ============= ✅ LOGIN =============
 
 router.post('/login', (req, res, next) => {
   if (req.body.email === '' || req.body.password === '') {
@@ -61,14 +62,16 @@ function serializeTheUserObject(userObj){
   return result;
 }
 
-// ❗️👇 Fix .populate() for my user model 👇❗️
+// ---> 👇 .populate() ? <---
 router.get('/serializeuser', (req, res, next)=>{
   console.log(req.session);
   console.log(req.session.currentlyLoggedIn);
 
   if(!req.session.currentlyLoggedIn) res.json(null);
 
-  User.findById(req.session.currentlyLoggedIn._id).populate('songs')
+  User.findById(req.session.currentlyLoggedIn._id)
+  .populate('songs')
+  .populate('comments')
   .then((theUser)=>{
     res.json(serializeTheUserObject(theUser))
   })
@@ -78,7 +81,7 @@ router.get('/serializeuser', (req, res, next)=>{
 })
 
 
-// ============= LOGOUT ✅ =============
+// ============= ✅ LOGOUT =============
 
 router.post('/logout', (req, res, next) =>{
   req.session.destroy(err => {
@@ -88,53 +91,88 @@ router.post('/logout', (req, res, next) =>{
 })
 
 
-// ============ ❗️ USER PROFILE PAGE ❗️ ============
+// ============ ✅ USER PROFILE PAGE ============
 
 router.get('/user-profile', (req, res, next) => {
   User.findById(req.session.currentlyLoggedIn._id)
   .populate('songs')
   .populate('comments')
   .then(theUser => {
-      console.log('The clicked on movie: ', theUser);
-      res.json('auth/user-profile', theUser);
+      console.log('The User Profile--->', theUser);
+      res.json(theUser);
   })
-  .catch(error => {
-      console.log({error});
+  .catch(err => {
+      console.log({err});
   })
 })
 
 
+// router.get('/user-profile/:userId', (req, res, next) => {
+//   User.findById(req.params.userId)
+//   .populate('songs')
+//   .populate('comments')
+//   .then(theUser => {
+//       console.log('The User Profile--->', theUser);
+//       res.json(theUser);
+//   })
+//   .catch(err => {
+//       console.log({err});
+//   })
+// })
+
+
 // ============ ❗️ UPDATE USER PROFILE ❗️ =============
 
-// router.get('/user-profile/:id/edit', (req, res, next) => {
-    
-//   User.findById(req.params.id)
-//   .then((movieFromDb) => {
-//       console.log('Update movie: ', movieFromDb);
-//       Celebrity.find(req.params.celebsFromDb)
-//       .then((celebsFromDb)=>{
-//           console.log('Update celeb: ', celebsFromDb);
-//           res.render('movies/edit-movie', movieFromDb)
-//       })
-//   })
-// })
+// Is this GET route neccessary?
 
-// router.post('/movies/:id', (req, res, next)=>{
-//   const movieToUpdate = {
-//       title: req.body.title,
-//       genre: req.body.genre,
-//       plot: req.body.plot,
-//       cast: req.body.cast
-//   }
+router.put('/update/:userId', (req, res, next) => {
+  User.findById(req.params.id)
+  .populate('songs')
+  .populate('comments')
+  .then((theUser) => {
+      console.log('User profile to update---> ', theUser);
+      res.json(theUser);
+  })
+  .catch((err) => {
+    console.log({err});
+  })
+})
 
-//   Movie.findByIdAndUpdate(req.params.id, movieToUpdate)
-//   .then(theUpdatedMovie => {
-//       console.log('The Edit: ', theUpdatedMovie);
-//       res.redirect(`/movies/${theUpdatedMovie.id}`);
-//   }).catch(error => {
-//       console.log({error});
-//   })
-// })
+router.put('/update/:id', (req, res, next) => {
+  
+  // const userToUpdate = {
+  //     email: req.body.email,
+  //     creatorTitle: req.body.creatorTitle,
+  //     creatorProfile: req.body.creatorProfile,
+  //     profilePic: req.body.profilePic
+  // }
+
+  User.findByIdAndUpdate(req.params.id, {
+      email: req.body.email,
+      creatorTitle: req.body.creatorTitle,
+      creatorProfile: req.body.creatorProfile,
+      profilePic: req.body.profilePic
+  })
+  .then(theUpdatedUser => {
+      console.log('The Updated User--->', response);
+      res.json(response);
+  }).catch(err => {
+      console.log(err);
+  })
+})
+
+
+// ============ ❗️ DELETE USER PROFILE/ACCT ❗️ =============
+
+router.delete('/', (req, res) => {
+    User.findByIdAndDelete(req.body.userId)
+    .then((deletedUser) => {
+        res.json({success: true, res: `The account for ${req.body.firstName} ${req.body.lastName} has been deleted!`});
+        console.log('DELETED USER -->', deletedUser);
+    }).catch(err => {
+        res.json({success: false, res: err});
+    })
+});
 
 
 module.exports = router;

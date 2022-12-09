@@ -2,16 +2,14 @@ const express = require("express");
 const router = express.Router();
 const Song = require("../models/Song.model");
 const User = require("../models/User.model");
-const Comment = require("../models/Comment.model");
+const { Schema, model } = require("mongoose");
 
 
 
-// ============ CREATE A SONG ============
-// create route good ✅
-// 👉 needs Cloudinary for file upload
+// ============ ✅ CREATE A SONG ============
+// 👉 needs Cloudinary for file upload?
 
 router.post('/add-song', (req, res ,next) => {
-    console.log(req.body);
     User.findById(req.session.currentlyLoggedIn._id)
     .then((theUser) => {
 
@@ -37,15 +35,15 @@ router.post('/add-song', (req, res ,next) => {
         })
         .catch((err) => {console.log(err)})
     })
-    
 });
 
 
-// ============ READ A LIST OF SONGS ✅ ============
+// ============ ✅ READ A LIST OF SONGS ============
 
 router.get("/songs-list", (req, res, next) => {
     Song.find()
 	.then((theSongs) => {
+        console.log('ALL THE SONGS LIST--->', theSongs);
         res.json(theSongs);
 	})
 	.catch((err) => {
@@ -54,37 +52,57 @@ router.get("/songs-list", (req, res, next) => {
 });
 
 
-// ============ DISPLAY ONE SONG ============
-// 👉 .populate() user?, comments?
+// ============ ✅ DISPLAY ONE SONG ============
+// ❓ Do I need to populate() the user ❓
 
 router.get("/:songId", (req, res, next) => {
 	Song.findById(req.params.songId)
-		.then((songFromDb) => {
-			res.json(songFromDb);
-		})
-		.catch((err) => {
-			res.json(err);
-		});
+	.then((songFromDb) => {
+        console.log('THE ONE SONG--->', songFromDb)
+		res.json(songFromDb);
+	})
+	.catch((err) => {
+		res.json(err);
+	});
 });
 
 
-// ============ UPDATE A SONG (song title) ============
-
-router.put('/', (req, res) => {
-    Song.findByIdAndUpdate(req.body.song_id, req.body, {new: true})
-    .then(res => {
-        res.json({success: true, res});
-    }).catch(err => {
-        res.json({success: false, res: err});
+// ============ ✅ UPDATE A SONG (song title) ============
+    
+router.put('/update/:songId', (req, res ,next) => {      
+    Song.findByIdAndUpdate(req.params.songId, {
+        songTitle: req.body.songTitle
     })
+    .then((response) => {
+        res.json(response)
+    })
+    .catch((err) => {
+        console.log(err)
+    });
 });
 
 
-// ============ DELETE A SONG ============
-// 👉 delte associated comments as well
 
+// ============ ✅ DELETE A SONG ============
 
-
+router.delete('/delete', (req, res ,next) => {       
+    Song.findByIdAndDelete(req.body.songId)
+    .then((theDeletedSong) => {
+        console.log('DELETED SONG --->', theDeletedSong)
+        console.log('REQ.SESSION.CURR-LOG-IN --->', req.session.currentlyLoggedIn)
+        User.findByIdAndUpdate(req.session.currentlyLoggedIn._id, {
+            $pull: {songs: req.body.songId}
+        })
+        .then((updatedUserSonglist) => {
+            res.json(updatedUserSonglist)
+        })
+        .catch((err) => {
+            console.log(err);
+            res.json(err);
+        });
+    })
+    .catch((err) => {console.log(err)})
+});
 
 
 
