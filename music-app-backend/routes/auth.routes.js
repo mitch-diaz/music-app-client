@@ -103,71 +103,34 @@ router.get('/user-profile', (req, res, next) => {
   })
   .catch(err => {
       console.log({err});
-  })
-})
+  });
+});
 
 
-// router.get('/user-profile/:userId', (req, res, next) => {
-//   User.findById(req.params.userId)
-//   .populate('songs')
-//   .populate('comments')
-//   .then(theUser => {
-//       console.log('The User Profile--->', theUser);
-//       res.json(theUser);
-//   })
-//   .catch(err => {
-//       console.log({err});
-//   })
-// })
-
-
-// ============ ❗️ UPDATE USER PROFILE ❗️ =============
-
-// Is this GET route neccessary?
+// ============ ✅ UPDATE USER PROFILE =============
 
 router.put('/update/:userId', (req, res, next) => {
-  User.findById(req.params.id)
-  .populate('songs')
-  .populate('comments')
-  .then((theUser) => {
-      console.log('User profile to update---> ', theUser);
-      res.json(theUser);
-  })
-  .catch((err) => {
-    console.log({err});
-  })
-})
-
-router.put('/update/:id', (req, res, next) => {
-  
-  // const userToUpdate = {
-  //     email: req.body.email,
-  //     creatorTitle: req.body.creatorTitle,
-  //     creatorProfile: req.body.creatorProfile,
-  //     profilePic: req.body.profilePic
-  // }
-
-  User.findByIdAndUpdate(req.params.id, {
-      email: req.body.email,
-      creatorTitle: req.body.creatorTitle,
-      creatorProfile: req.body.creatorProfile,
-      profilePic: req.body.profilePic
-  })
-  .then(theUpdatedUser => {
-      console.log('The Updated User--->', response);
-      res.json(response);
-  }).catch(err => {
-      console.log(err);
-  })
+    User.findByIdAndUpdate(req.params.userId, {
+        creatorTitle: req.body.creatorTitle,
+        creatorProfile: req.body.creatorProfile,
+        profilePic: req.body.profilePic,
+    })
+    .then((updatedUserProfile) => {
+        console.log('UPDATED USER PROFILE --> ', updatedUserProfile);
+        res.json(updatedUserProfile);
+    })
+    .catch((err) => {
+      console.log({err});
+    })
 })
 
 
-// ============ ❗️ DELETE USER PROFILE/ACCT ❗️ =============
+// ============ ✅ DELETE USER PROFILE/ACCT =============
 
-router.delete('/', (req, res) => {
+router.delete('/delete', (req, res) => {
     User.findByIdAndDelete(req.body.userId)
     .then((deletedUser) => {
-        res.json({success: true, res: `The account for ${req.body.firstName} ${req.body.lastName} has been deleted!`});
+        res.json({success: true, res: `Your account has been deleted permenently!`});
         console.log('DELETED USER -->', deletedUser);
     }).catch(err => {
         res.json({success: false, res: err});
