@@ -1,8 +1,11 @@
 const { Schema, model } = require("mongoose");
 
-const reviewSchema = new Schema(
+const videoSchema = new Schema(
   {
-    reviewsOfArtist: {
+    videoUrl: {
+        type: String
+    },
+    videoTitle: {
         type: String
     },
     user: { type: 
@@ -14,5 +17,5 @@ const reviewSchema = new Schema(
   }
 );
 
-const Review = model("Review", reviewSchema);
-module.exports = Review;
+const Video = model("Video", videoSchema);
+module.exports = Video;

@@ -56,6 +56,8 @@ app.use("/songs", songRoutes);
 const commentRoutes = require("./routes/comments.routes");
 app.use("/comments", commentRoutes);
 
+const videoRoutes = require("./routes/videos.routes");
+app.use("/videos", videoRoutes);
 
 require("./error-handling")(app);
 

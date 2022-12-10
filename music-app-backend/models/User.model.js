@@ -33,11 +33,14 @@ const userSchema = new Schema(
     songs: { type: 
       [{type: Schema.Types.ObjectId, ref: 'Song'}]
     },
-    comments: { type: 
-    [{type: Schema.Types.ObjectId, ref: 'Comment'}]
+    videos: { type: 
+      [{type: Schema.Types.ObjectId, ref: 'Video'}]
     },
-    // reviews: { type: 
-    // [{type: Schema.Types.ObjectId, ref: 'Review'}]
+    // following: { type: 
+    //  [{type: Schema.Types.ObjectId, ref: 'User'}]
+    // },
+    // likes: { type: 
+    //  [{type: Schema.Types.ObjectId, ref: 'Song'}]
     // },
   },
   {

@@ -7,41 +7,82 @@ const Song = require("../models/Song.model")
 
 // ============ CREATE A COMMENT OF A SONG ============
 
-router.post('/create', (req, res ,next) => {
-    Song.findById(req.session._id)
-    .then((theUser) => {
+// router.post("/create", (req, res, next) => {
+//     const theSongComment = {
+//         theComments: req.body.theComments,
+//     };
 
-        const theSongComment = {
-            reply: req.body.reply, //comment model
-            comments: req.body.comments, //song model
-            user: theUser //user model
-        }
-        
-        console.log({body: req.body, songToCreate});
-        
-        Comment.create(commentToCreate)
-        .then((newlyMadeComment) => {
-            console.log('NEW SONG-REPLY --->', newlyMadeComment)
-            User.findByIdAndUpdate(req.session.currentlyLoggedIn._id, {
-                $push: {comments: newlyMadeComment}
-            })
-            .then((theUserComment) => {
-                res.json(theUserComment)
-            })
-            .catch((err) => {
-                res.json(err)
-            });
-        })
-        .catch((err) => {console.log(err)})
+//     Comment.create(theSongComment)
+//     .then((newComment) => {
+//         res.json(newComment);
+//         console.log('NEW COMMENT -->', newComment);
+//     })
+//     .catch((err) => {
+//         res.json(err);
+//         console.log(err);
+//     });
+// });
+
+
+// ============= Delete 2 =============
+
+router.post("/:songId/add-comment", (req, res, next) => {
+    const theSongComment = {
+        theComments: req.body.theComments,
+    };
+
+    Comment.create(theSongComment)
+    .then((newComment) => {
+        res.json(newComment);
+        console.log('NEW COMMENT -->', newComment);
     })
+    .then(() => {
+        Song.findByIdAndUpdate(req.params.songId, {
+            $push: {comments: songId}
+        })
+    })
+    .catch((err) => {
+        res.json(err);
+        console.log(err);
+    });
 });
+
+// ============= Delete 3 =============
+
+// router.post('/add-comment', (req, res ,next) => {
+//     Song.findById(req.params.songId)
+//     .then((theSong) => {
+
+//         const theSongComment = {
+//             theComments: req.body.theComments,
+//             songs: theSong,
+//         }
+        
+//         console.log({body: req.body, theSongComment});
+        
+//         Comment.create(theSongComment)
+//         .then((newComment) => {
+//             console.log('NEW COMMENT IN COMMENT MODEL --->', newComment);
+//             Song.findByIdAndUpdate(req.body.songId, {
+//                 $push: {comments: newComment}
+//             })
+//             .then((theSongComment) => {
+//                 res.json(theSongComment);
+//                 console.log('THE COMMENT REF IN SONG MODEL-->', theSongComment);
+//             })
+//             .catch((err) => {
+//                 res.json(err)
+//             });
+//         })
+//         .catch((err) => {console.log(err)})
+//     })
+// });
 
 
 // ============ READ LIST OF COMMENTS ============
 
 router.get("/comments", (req, res, next) => {
     Comment.find()
-    .populate('user')
     .populate('song')
 	.then((response) => {
         res.json(response);

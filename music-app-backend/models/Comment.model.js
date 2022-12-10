@@ -2,7 +2,7 @@ const { Schema, model } = require("mongoose");
 
 const commentSchema = new Schema(
   {
-    reply: {
+    theComments: {
       type: String
     },
     user: { type: 
