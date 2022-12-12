@@ -1,0 +1,95 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  /* background-color: #282c34; */
+  /* background: #0f0c29;   */
+  /* fallback for old browsers */
+  /* background: -webkit-linear-gradient(to top, #24243e, #302b63, #0f0c29);   */
+  /* Chrome 10-25, Safari 5.1-6 */
+  /* background: linear-gradient(to top, #24243e, #302b63, #0f0c29);  */
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  /* background: #141E30;   */
+  /* fallback for old browsers */
+  /* background: -webkit-linear-gradient(to bottom, #243B55, #141E30);   */
+  /* Chrome 10-25, Safari 5.1-6 */
+  /* background: linear-gradient(to bottom, #243B55, #141E30);  */
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  background: #16222A;  
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to top, #3A6073, #16222A);  
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to top, #3A6073, #16222A); 
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+  min-height: 40vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-btns-container {
+  width: 325px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.App-btn1 {
+  height: 40px;
+  width: 80px;
+  font-weight: bold;
+  color: white;
+  background-color: transparent;
+  border: 1px solid white;
+  border-radius: 5px;
+}
+
+.App-btn2 {
+  height: 40px;
+  width: 130px;
+  font-weight: bold;
+  color: white;
+  background-color: #16222A;
+  border: 1px solid white;
+  border-radius: 5px;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.home-photo {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-image: url("../public/assets/matthew-kalapuch-sqJ4tLBiurw-unsplash.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.home-photo {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.home-photo p {
+  color: rgb(21, 21, 21);
+  background-color: rgba(240, 255, 255, 0.183);
+  margin-left: 15px;
+}
